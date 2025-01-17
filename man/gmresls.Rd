@@ -7,7 +7,9 @@
 gmresls(f_resid, f_BAx, x0 = NULL, k = 0, maxit = 0, tol = 1e-07, ...)
 }
 \arguments{
-\item{f_resid}{A function f_resid(x, ...) calculating B(b-Ax) for a given x. If x is of length 0 (e.g. NULL), it must be considered as 0.}
+\item{f_resid}{A function f_resid(x, ...) calculating B(b-Ax) for a given x.
+If x is of length 0 (e.g. NULL), it must be considered as 0. If x0 is not
+NULL in the call to gmres() then x wont be NULL in the f_resid(x, ...) call either.}
 
 \item{f_BAx}{A function f_BAx(x, ...) calculating matrix-matrix-vector product BAx for a given x.}
 

@@ -4,7 +4,9 @@
 #' preconditioner B: BAx=Bb (dim(B)=(n,m)).
 #' Implemented method uses GMRES(k) with callback functions, i.e. no explicit A or B are required. GMRES can be restarted after k iterations.
 #'
-#' @param f_resid A function f_resid(x, ...) calculating B(b-Ax) for a given x. If x is of length 0 (e.g. NULL), it must be considered as 0.
+#' @param f_resid A function f_resid(x, ...) calculating B(b-Ax) for a given x.
+#'   If x is of length 0 (e.g. NULL), it must be considered as 0. If x0 is not
+#'   NULL in the call to gmres() then x wont be NULL in the f_resid(x, ...) call either.
 #' @param f_BAx A function f_BAx(x, ...) calculating matrix-matrix-vector product BAx for a given x.
 #' @param x0 A vector or NULL (which means 0), initial approximation for Ax=b
 #' @param k An integer, parameter for restarting GMRES. Value 0 (default) means no restart, i.e. at most length(x) basis vectors will be constructed and used.
@@ -43,7 +45,7 @@ gmresls=function(f_resid, f_BAx, x0=NULL, k=0, maxit=0, tol=1.e-7, ...) {
       nx=length(r0)
       if (maxit == 0L)
         maxit=nx
-      nbb=if (is.null(x0)) nr0 else sqrt(crossprod(c(f_resid(NULL, ...))))
+      nbb=if (is.null(x0)) nr0 else sqrt(crossprod(c(f_resid(double(nx), ...))))
     }
     
     v=as.matrix(c(r0))*(1./nr0)
@@ -53,8 +55,13 @@ gmresls=function(f_resid, f_BAx, x0=NULL, k=0, maxit=0, tol=1.e-7, ...) {
       k=nx
     converged=nr0/nbb <= tol
     for (i in seq_len(k)) {
-      if (converged)
-        return(if (is.null(x0)) double(nx) else x0)
+      if (converged && i == 1L) {
+        x=if (is.null(x0)) double(nx) else x0
+        attr(x, "norm_res")=nr0
+        attr(x, "iteration")=it
+        attr(x, "converged")=converged
+        return(x)
+      }
       bavi=f_BAx(v[,i], ...)
       h=cbind(h, crossprod(v, bavi))
       v=cbind(v, bavi-v%*%h[,i])

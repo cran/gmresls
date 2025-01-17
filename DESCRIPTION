@@ -1,7 +1,7 @@
 Package: gmresls
 Title: Solve Least Squares with GMRES(k)
-Version: 0.2.2
-Date: 2024-10-17
+Version: 0.2.3
+Date: 2025-01-17
 Authors@R: 
     person("Serguei", "Sokol", , "sokol@insa-toulouse.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-5674-3327"))
@@ -12,8 +12,8 @@ RoxygenNote: 7.3.2
 Suggests: RUnit
 BugReports: https://forgemia.inra.fr/mathscell/gmresls/-/issues
 NeedsCompilation: no
-Packaged: 2024-10-17 08:20:43 UTC; sokol
+Packaged: 2025-01-17 14:39:02 UTC; sokol
 Author: Serguei Sokol [aut, cre] (<https://orcid.org/0000-0002-5674-3327>)
 Maintainer: Serguei Sokol <sokol@insa-toulouse.fr>
 Repository: CRAN
-Date/Publication: 2024-10-18 10:40:44 UTC
+Date/Publication: 2025-01-17 15:20:01 UTC
